@@ -157,6 +157,7 @@ public class ExamController {
                 egg.getQuestions().add(q);
                 egg.setNumQuestions(egg.getNumQuestions()+1);
                 q.setLastUsed(LocalDateTime.now());
+                q.setTimesUsed(q.getTimesUsed()+1);
                 egg.setLastEdited(LocalDateTime.now());
     
             }

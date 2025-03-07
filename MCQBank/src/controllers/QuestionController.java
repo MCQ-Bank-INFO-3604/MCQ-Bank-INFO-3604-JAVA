@@ -117,6 +117,14 @@ public class QuestionController {
         model.setLastUsed(lastUsed);
     }
 
+    public LocalDateTime getLastEdited() {
+        return model.getLastEdited();
+    }
+
+    public void setLastEdited(LocalDateTime lastEdited) {
+        model.setLastEdited(lastEdited);
+    }    
+
     public int getTimesUsed(){
         return model.getTimesUsed();
     }
@@ -145,6 +153,13 @@ public class QuestionController {
         Question.getAllQuestions().add(newQuestion);
     
     }
+ 
+    public static void create_question(int questionID, String quest,String Canswer, String Wanswer1, String Wanswer2, String Wanswer3, String Course, String Topic, String subTopic, String difficulty, LocalDateTime dateCreated, LocalDateTime lastUsed, LocalDateTime LastEdited, int timesUsed, float performanceMetric){
+        Question newQuestion = new Question(questionID, quest, Canswer, Wanswer1, Wanswer2, Wanswer3, Course, Topic, subTopic, difficulty,dateCreated, lastUsed, LastEdited, timesUsed, performanceMetric);
+        
+        Question.getAllQuestions().add(newQuestion);
+    
+    }    
 
     public static Question retrieveQuestion(int questionID){
         for(Question q : Question.getAllQuestions()){
@@ -189,6 +204,7 @@ public class QuestionController {
             q.setTopic(q2.getTopic());
             q.setSubTopic(q2.getSubTopic());
             q.setDifficulty(q2.getDifficulty());
+            q.setLastEdited(LocalDateTime.now());
             // q.setDateCreated(q2.getDateCreated());
             // q.setLastUsed(q2.getLastUsed());
 

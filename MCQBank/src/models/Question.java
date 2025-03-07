@@ -17,6 +17,7 @@ public class Question{
     private String difficulty;
     private LocalDateTime dateCreated;
     private LocalDateTime lastUsed;
+    private LocalDateTime lastEdited;
     private int timesUsed;
     private float performanceMetric;
     private Image img;
@@ -38,7 +39,7 @@ public class Question{
         //allQuestions.add(this);
     }
 
-    public Question(String quest,String Canswer, String Wanswer1, String Wanswer2, String Wanswer3, String Course, String Topic, String subTopic, String difficulty, Image img){
+    public Question(int questionID, String quest,String Canswer, String Wanswer1, String Wanswer2, String Wanswer3, String Course, String Topic, String subTopic, String difficulty, LocalDateTime dateCreated, LocalDateTime lastUsed, LocalDateTime lastEdited, int timesUsed, float performanceMetric){
         this.questionID = questionID;
         this.quest = quest;
         this.Canswer = Canswer;
@@ -49,8 +50,12 @@ public class Question{
         this.Topic = Topic;
         this.subTopic = subTopic;
         this.difficulty = difficulty;
-        this.dateCreated = LocalDateTime.now();
-        this.img = img;
+        this.dateCreated = dateCreated;
+        this.lastUsed = lastUsed;
+        this.lastEdited = lastEdited;
+        this.timesUsed = timesUsed;
+        this.performanceMetric = performanceMetric;
+
     }
 
     public static ArrayList<Question> getAllQuestions(){
@@ -156,6 +161,14 @@ public class Question{
 
     public void setLastUsed(LocalDateTime lastUsed) {
         this.lastUsed = lastUsed;
+    }
+
+    public LocalDateTime getLastEdited() {
+        return lastEdited;
+    }
+
+    public void setLastEdited(LocalDateTime lastEdited) {
+        this.lastEdited = lastEdited;
     }
 
     public int getTimesUsed(){

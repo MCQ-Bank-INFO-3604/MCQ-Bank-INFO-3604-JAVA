@@ -57,6 +57,7 @@ public class QuestionView {
             System.out.println("Difficulty: " + q.getDifficulty());
             System.out.println("Date Created: " + q.getDateCreated());
             System.out.println("Last Used: " + q.getLastUsed());
+            System.out.println("Last Edited: " + q.getLastEdited());
             System.out.println("Times Used: " + q.getTimesUsed());
             System.out.println("Performance Metric: " + q.getPerformanceMetric());
         }
@@ -82,6 +83,7 @@ public class QuestionView {
             System.out.println("Difficulty: " + q.getDifficulty());
             System.out.println("Date Created: " + q.getDateCreated());
             System.out.println("Last Used: " + q.getLastUsed());
+            System.out.println("Last Edited: " + q.getLastEdited());
             System.out.println("Times Used: " + q.getTimesUsed());
             System.out.println("Performance Metric: " + q.getPerformanceMetric());
         }
