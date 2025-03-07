@@ -1,7 +1,9 @@
+import java.io.File;  // Import the File class
+import java.io.IOException;  // Import the IOException class to handle errors
+
 import controllers.*;
 import models.*;
 import views.*;
-
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -44,13 +46,20 @@ public class App {
         
 
         
-    //     private static void retrieveQuestionsFromDatabase(){
+    private void readQuestionBank(){
+
+    }
+
+    private void writeQuestionBank(){
+
+    }
+
+    private void readExamBank(){
+
+    }
+
+    private void writeExamBank(){
         
-    //     Question question = new Question("What is the capital of France?","Paris", "Berlin","Madrid","Rome", "Geography", "Geography", "Countries", "Easy");
-    //     Question question2 = new Question("What is the chemical symbol for gold?","Au","Ag", "Pb", "Fe", "Chemistry", "Periodic Table", "Elements", "Easy");
-    //     Question question3 = new Question("Which planet is known as the Red Planet?", "Mars", "Venus", "Jupiter", "Saturn", "Astronomy", "Solar System", "Planets", "Easy");
-
-    // }
-
+    }
 
 }
