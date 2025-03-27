@@ -3,9 +3,11 @@ package models;
 import java.awt.Image;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.sql.*;
 
 public class Question{
     private static ArrayList<Question> allQuestions = new ArrayList<>();
+    //private static final String DB_URL = "jdbc:sqlite:mcq_bank.db";
 
     private static int xD = 0;
     private int questionID;
