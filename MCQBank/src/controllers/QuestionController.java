@@ -1,213 +1,168 @@
 package controllers;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import models.Question;
-import views.QuestionView;
+import java.util.Date;
 
 
 public class QuestionController {
+    private static final String DB_URL = "jdbc:sqlite:mcq_bank.db?journal_mode=WAL&busy_timeout=3000";
 
-    private Question model;
-    private QuestionView view;
-
-    public QuestionController(Question model, QuestionView view){
-
-        this.model = model;
-        this.view = view;
-
-    }
-
-
-    //models
-
-
-    public String getQuestion() {
-        return model.getQuest();
-    }
-
-    public void setQuest(String quest) {
-        model.setQuest(quest);
-    }
-
-    public String getCanswer() {
-        return model.getCanswer();
-    }
-
-    public void setCanswer(String Canswer) {
-        model.setCanswer(Canswer);
-    }
-
-    public String getWanswer1() {
-        return model.getWanswer1();
-    }
-
-    public void setWanswer1(String Wanswer1) {
-        model.setWanswer1(Wanswer1);
-    }
-
-    public String getWanswer2() {
-        return model.getWanswer2();
-    }
-
-    public void setWanswer2(String Wanswer2) {
-        model.setWanswer2(Wanswer2);
-    }
-
-    public String getWanswer3() {
-        return model.getWanswer3();
-    }
-
-    public void setWanswer3(String Wanswer3) {
-        model.setWanswer3(Wanswer3);
-    }
-
-    public String getCourse() {
-        return model.getCourse();
-    }
-
-    public void setCourse(String Course) {
-        model.setCourse(Course);
-    }
-
-    public String getTopic() {
-        return model.getTopic();
-    }
-
-    public void setTopic(String Topic) {
-        model.setTopic(Topic);
-    }
-
-    public String getSubTopic() {
-        return model.getSubTopic();
-    }
-
-    public void setSubTopic(String subTopic) {
-        model.setSubTopic(subTopic);
-    }
-
-    public String getDifficulty() {
-        return model.getDifficulty();
-    }
-
-    public void setDifficulty(String difficulty) {
-        model.setDifficulty(difficulty);
-    }
-
-    // public Image getImg() {
-    //     return model.getImg();
-    // }
-
-    // public void setImg(Image img) {
-    //     model.setImg(img);
-    // }
-
-    public LocalDateTime getDateCreated() {
-        return model.getDateCreated();
-    }
-
-    public void setDateCreated(LocalDateTime dateCreated) {
-        model.setDateCreated(dateCreated);
-    }
-
-    public LocalDateTime getLastUsed() {
-        return model.getLastUsed();
-    }
-
-    public void setLastUsed(LocalDateTime lastUsed) {
-        model.setLastUsed(lastUsed);
-    }
-
-    public LocalDateTime getLastEdited() {
-        return model.getLastEdited();
-    }
-
-    public void setLastEdited(LocalDateTime lastEdited) {
-        model.setLastEdited(lastEdited);
-    }    
-
-    public int getTimesUsed(){
-        return model.getTimesUsed();
-    }
-
-    public void setTimesUsed(int timesUsed){
-        model.setTimesUsed(timesUsed);
-    }
-
-    public float getPerformanceMetric(){
-        return model.getPerformanceMetric();
-    }
-
-    public void getPerformanceMetric(float perfomanceMetric){
-        model.setPerformanceMetric(perfomanceMetric);
-    }
-
-    //views
-    // public void updateView(){
-    //     view.printQuestion(getQuestion(), getCanswer(), getWanswer1(), getWanswer2(), getWanswer3(), getCourse(), getTopic(), getSubTopic(), getDifficulty() , getDateCreated() , getLastUsed(), getTimesUsed(), getPerformanceMetric());
-
-    // }
-
-    public static void create_question(String quest,String Canswer, String Wanswer1, String Wanswer2, String Wanswer3, String Course, String Topic, String subTopic, String difficulty){
-        Question newQuestion = new Question(quest,Canswer,Wanswer1,Wanswer2,Wanswer3,Course,Topic,subTopic, difficulty);
+    public void insertQuestion(String question, String correctAnswer, String wrong1, String wrong2, String wrong3, String course, String topic, String subTopic, String difficulty) {
+        String sql = "INSERT INTO questions (question, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, course, topic, subTopic, difficulty, dateCreated) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         
-        Question.getAllQuestions().add(newQuestion);
-    
-    }
- 
-    public static void create_question(int questionID, String quest,String Canswer, String Wanswer1, String Wanswer2, String Wanswer3, String Course, String Topic, String subTopic, String difficulty, LocalDateTime dateCreated, LocalDateTime lastUsed, LocalDateTime LastEdited, int timesUsed, float performanceMetric){
-        Question newQuestion = new Question(questionID, quest, Canswer, Wanswer1, Wanswer2, Wanswer3, Course, Topic, subTopic, difficulty,dateCreated, lastUsed, LastEdited, timesUsed, performanceMetric);
-        
-        Question.getAllQuestions().add(newQuestion);
-    
-    }    
+        // java.util.Date today=new Date();
+        // java.sql.Date date=new java.sql.Date(today.getTime()); //your SQL date object
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, question);
+            pstmt.setString(2, correctAnswer);
+            pstmt.setString(3, wrong1);
+            pstmt.setString(4, wrong2);
+            pstmt.setString(5, wrong3);
+            pstmt.setString(6, course);
+            pstmt.setString(7, topic);
+            pstmt.setString(8, subTopic);
+            pstmt.setString(9, difficulty);
 
-    public static Question retrieveQuestion(int questionID){
-        for(Question q : Question.getAllQuestions()){
-            if (q.getQuestionID()==questionID){
-                return q;
+            pstmt.setString(10, date);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void insertQuestionsFromCSV(String filename){
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(","); // Assuming the CSV is comma-separated
+                String question = values[0];
+                String correctAnswer = values[1];
+                String wrong1 = values[2];
+                String wrong2 = values[3];
+                String wrong3 = values[4];
+                String course = values[5];
+                String topic = values[6];
+                String subTopic = values[7];
+                String difficulty = values[8];
+
+                // Pass data to the next step
+                insertQuestion(question, correctAnswer, wrong1, wrong2, wrong3, course, topic, subTopic, difficulty);
             }
-        }
-        return null;
-    }
-
-    public static void delete_question(int questionID)
-    {
-        Question q = retrieveQuestion(questionID);
-        if (q==null)
-        {
-            System.out.println("No question was found");
-        }
-        else{
-            Question.getAllQuestions().remove(q);
-            // System.out.println("The question : " + q.getQuest() + " has been deleted.");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         
+    }    
 
-    }
 
-
-    public static void edit_question(int questionID, Question q2){
-        Question q = retrieveQuestion(questionID);
+    public ResultSet getQuestion(int questionID){
         
-        if (q == null)
-        {
-            System.out.println("No question was found, please try again");
-        }
-        else
-        {
-            q.setQuest(q2.getQuest());
-            q.setCanswer(q2.getCanswer());
-            q.setWanswer1(q2.getWanswer1());
-            q.setWanswer2(q2.getWanswer2());
-            q.setWanswer3(q2.getWanswer3());
-            q.setCourse(q2.getCourse());
-            q.setTopic(q2.getTopic());
-            q.setSubTopic(q2.getSubTopic());
-            q.setDifficulty(q2.getDifficulty());
-            q.setLastEdited(LocalDateTime.now());
-            // q.setDateCreated(q2.getDateCreated());
-            // q.setLastUsed(q2.getLastUsed());
+        String sql = "SELECT * FROM questions WHERE questionID = '" + questionID + "';";
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            return stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }        
+    }
 
+    public void deleteQuestion(int questionID){
+        
+        String sql = "DELETE FROM questions WHERE questionID = '" + questionID + "';";
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }        
+    }
+
+
+    public void editQuestion(int questionID, String question, String correctAnswer, String wrong1, String wrong2, String wrong3, String course, String topic, String subTopic, String difficulty) {
+        java.util.Date today=new Date();
+        java.sql.Date date=new java.sql.Date(today.getTime()); //your SQL date object
+
+        String sql = "UPDATE questions " +
+                    "SET question = '" + question + "' ,"+
+                    "correctAnswer = '" + correctAnswer + "' ,"+
+                    "wrongAnswer1 = '" + wrong1 + "' ,"+
+                    "wrongAnswer2 = '" + wrong2 + "' ,"+
+                    "wrongAnswer3= '" + wrong3 + "' ,"+
+                    "course = '" + course + "' ,"+
+                    "topic = '" + topic + "' ,"+
+                    "subTopic = '" + subTopic + "' ,"+
+                    "difficulty = '" + difficulty + "' ,"+
+                    "lastEdited = '" + date + "' " +
+                    "WHERE questionID = '" + questionID + "';";
+
+
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }        
+    }
+
+    public ResultSet getTopics(){
+        
+        String sql = "SELECT DISTINCT topic FROM questions;";
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            return stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }        
+    }     
+
+    public ResultSet getQuestionsWithFilter(String filter, String search){
+        
+        String sql = "SELECT * FROM questions WHERE " + filter +" = '" + search + "';";
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            return stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }        
+    }    
+
+    public ResultSet getAllQuestions() {
+        String sql = "SELECT * FROM questions";
+        
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL);
+            Statement stmt = conn.createStatement();
+            return stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
+    
+    
+
 }
