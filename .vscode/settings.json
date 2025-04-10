@@ -1,8 +1,0 @@
-{
-    "java.project.sourcePaths": [
-        "MCQBank/src"
-    ],
-    "java.project.referencedLibraries": [
-        "/workspaces/MCQ-Bank-INFO-3604-JAVA/MCQBank/sqlite-jdbc-3.49.1.0.jar"
-    ]
-}
